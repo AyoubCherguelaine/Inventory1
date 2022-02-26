@@ -4,10 +4,9 @@ function AddArticle(article,callback){
 
     let q = "insert into Article(Name,SalePrice,Cost,Reference,BarCode) values  ('"+article.name+"',"+article.salePrice+","+article.cost+",'"+article.reference+"','"+article.barCode+"')";
     DB.query(q,(Error,Result)=>{
-        if(Error){
-            callback(Error);
-            console.log(Error);
-        }else{
+        
+        if (Error) throw error;
+        else{
             callback(Result);
         }
     });
@@ -18,8 +17,7 @@ function GetArticleById(idArticle, callback){
     let q ="select * from Article where idArticle = "+idArticle;
 
     DB.query(q,(Err,Result)=>{
-
-        if(Err) callback(Err,Result);
+        if (Err) throw error;
         else{
             callback(Result);
         }
@@ -34,7 +32,7 @@ function GetArticleDetailDimensions(idArticle, callback){
 
     DB.query(q,(Err,Result)=>{
 
-        if(Err) callback(Err,Result);
+        if (Err) throw error;
         else{
             callback(Result);
         }
@@ -49,7 +47,7 @@ function CreateDimension(Title, callback){
     
     DB.query(q,(Err,Result)=>{
 
-        if(Err) callback(Err,Result);
+        if (Err) throw error;
         else{
             callback(Result);
         }
@@ -63,7 +61,7 @@ function GetDimensions(callback) {
     let q= "select * from Dim";
     DB.query(q,(Err,Result)=>{
 
-        if(Err) callback(Err,Result);
+        if (Err) throw error;
         else{
             callback(Result);
         }
@@ -76,7 +74,7 @@ function RelatedArticleDimensions(idArticle, idDimension, callback){
 
     DB.query(q,(Err,Result)=>{
 
-        if(Err) callback(Err,Result);
+        if (Err) throw error;
         else{
             callback(Result);
         }
@@ -90,7 +88,7 @@ function GetQuantityOfArticleinStock(idArticle,callback){
     
     DB.query(q,(Err,Result)=>{
 
-        if(Err) callback(Err,Result);
+        if (Err) throw error;
         else{
             callback(Result);
         }
@@ -104,7 +102,7 @@ function GetQuantityOfArticleWithDimension(idArticle,callback){
     
     DB.query(q,(Err,Result)=>{
 
-        if(Err) callback(Err,Result);
+        if (Err) throw error;
         else{
             callback(Result);
         }
@@ -119,7 +117,7 @@ function GetQuantityOfArticle_Dimension(idArticle, idDimension,callback){
     
     DB.query(q,(Err,Result)=>{
 
-        if(Err) callback(Err,Result);
+        if (Err) throw error;
         else{
             callback(Result);
         }
@@ -133,7 +131,7 @@ function GetAllDimension_of_Article_in_Stock(idArticle,idDimension,idStock,callb
    
     DB.query(q,(Err,Result)=>{
 
-        if(Err) callback(Err,Result);
+        if (Err) throw error;
         else{
             callback(Result);
         }
@@ -147,7 +145,7 @@ function StockArticle_dim(idStock,idArticle, idDimension ,Quantity,Lot, callback
 
     DB.query(q,(Err,Result)=>{
 
-        if(Err) callback(Err,Result);
+        if (Err) throw error;
         else{
             callback(Result);
         }
@@ -162,7 +160,7 @@ function DestockArticle_dim(idStock,idArticle, idDimension ,QuantityDestock,Lot,
 
     DB.query(q,(Err,Result)=>{
 
-        if(Err) callback(Err,Result);
+        if (Err) throw error;
         else{
             callback(Result);
         }
