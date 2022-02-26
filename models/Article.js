@@ -58,6 +58,19 @@ function CreateDimension(Title, callback){
 
 }
 
+function GetDimensions(callback) {
+
+    let q= "select * from Dim";
+    DB.query(q,(Err,Result)=>{
+
+        if(Err) callback(Err,Result);
+        else{
+            callback(Result);
+        }
+
+    });
+}
+
 function RelatedArticleDimensions(idArticle, idDimension, callback){
     let q = " insert into DimensionArticle(idArticle,idDimension) values ("+idArticle+","+idDimension+")";
 
@@ -85,7 +98,7 @@ function GetQuantityOfArticleinStock(idArticle,callback){
     });
 }
 
-function getQuantityOfArticleWithDimension(idArticle,callback){
+function GetQuantityOfArticleWithDimension(idArticle,callback){
 
     let q= "select * from Article_in_stock_With_Dimesion where idArticle = " + idArticle  ;
     
@@ -100,7 +113,7 @@ function getQuantityOfArticleWithDimension(idArticle,callback){
 }
 
 
-function getQuantityOfArticle_Dimension(idArticle, idDimension,callback){
+function GetQuantityOfArticle_Dimension(idArticle, idDimension,callback){
 
     let q= "select sum(Quantity),idArticle,idDimension,Title,Article,ArticleReference from Article_in_stock_With_Dimesion where idArticle="+idArticle+" and idDimension= "+idDimension  ;
     
@@ -114,6 +127,47 @@ function getQuantityOfArticle_Dimension(idArticle, idDimension,callback){
     });
 }
 
+function GetAllDimension_of_Article_in_Stock(idArticle,idDimension,idStock,callback){
+
+    let q = "select * from Article_in_stock_With_Dimesion where idDimension = "+idDimension+" and idArticle ="+idArticle+" and idStock="+idStock;
+   
+    DB.query(q,(Err,Result)=>{
+
+        if(Err) callback(Err,Result);
+        else{
+            callback(Result);
+        }
+
+    });
+}
+
+function StockArticle_dim(idStock,idArticle, idDimension ,Quantity,Lot, callback){
+
+    let q = "insert into Article_in_Stock(idStock,idArticle,idDimension,Quantity,Lot) values ("+idStock+","+idArticle+","+idDimension+","+Quantity+",'"+Lot+"')";
+
+    DB.query(q,(Err,Result)=>{
+
+        if(Err) callback(Err,Result);
+        else{
+            callback(Result);
+        }
+
+    });
+}
 
 
-module.exports = {AddArticle,GetArticleById,GetArticleDetailDimensions};
+
+
+
+
+module.exports = {AddArticle,
+    GetArticleById,
+    GetArticleDetailDimensions,
+    CreateDimension,
+    RelatedArticleDimensions,
+    GetQuantityOfArticle_Dimension,
+    GetQuantityOfArticleinStock,
+    GetQuantityOfArticleWithDimension,
+    GetDimensions,
+    GetAllDimension_of_Article_in_Stock,
+    StockArticle_dim};
