@@ -156,7 +156,19 @@ function StockArticle_dim(idStock,idArticle, idDimension ,Quantity,Lot, callback
 }
 
 
+function DestockArticle_dim(idStock,idArticle, idDimension ,QuantityDestock,Lot,callback){
 
+    let q= "update Article_in_Stock set Quantity= Quantity - "+QuantityDestock+" where idStock="+idStock+" and idArticle="+idArticle+" and idDimension=" + idDimension +" and Lot = '"+Lot+"'";
+
+    DB.query(q,(Err,Result)=>{
+
+        if(Err) callback(Err,Result);
+        else{
+            callback(Result);
+        }
+
+    });
+}
 
 
 
@@ -170,4 +182,6 @@ module.exports = {AddArticle,
     GetQuantityOfArticleWithDimension,
     GetDimensions,
     GetAllDimension_of_Article_in_Stock,
-    StockArticle_dim};
+    StockArticle_dim,
+    DestockArticle_dim
+};
