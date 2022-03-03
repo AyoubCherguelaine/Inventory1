@@ -1,6 +1,6 @@
 var DB = require('./DB');
 
-function AddArticle(article,callback){
+function NewArticle(article,callback){
 
     let q = "insert into Article(Name,SalePrice,Cost,Reference,BarCode) values  ('"+article.name+"',"+article.salePrice+","+article.cost+",'"+article.reference+"','"+article.barCode+"')";
     DB.query(q,(Error,Result)=>{
@@ -22,6 +22,20 @@ function GetArticleById(idArticle, callback){
             callback(Result);
         }
 
+    });
+
+}
+
+function GetArticles(page,callback) {
+    let Debut= 20 *(page-1),Fin= 20 * (page);
+    let q ="select * from Article limit "+ Debut+" , " + Fin;
+
+
+    DB.query(q,(Err,Result)=>{
+        if(Err) throw error;
+        else{
+            callback(Result);
+        }
     });
 
 }
@@ -170,7 +184,8 @@ function DestockArticle_dim(idStock,idArticle, idDimension ,QuantityDestock,Lot,
 
 
 
-module.exports = {AddArticle,
+module.exports = {NewArticle,
+    GetArticles,
     GetArticleById,
     GetArticleDetailDimensions,
     CreateDimension,

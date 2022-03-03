@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <header>
+        <div class="button_Home"><a href="/home">Home</a></div>
+
+        <div class="button_">
+
+        </div>
+
+    </header>
+
+    <main>
+        <div class="Header_Up"> <a href="/AddProduct"> <button >New Product</button> </a> </div>
+        <div class="Table_Product">
+
+            <table >
+
+                <tr>
+                    <td>IdArticle</td>
+                    <td>Product Name</td>
+                    <td>Reference</td>
+                  
+                </tr>
+
+                <% for(let i=0;i<Result.length;i++){ %> 
+                    <a href="/DetailArticle/IdArticle=<%= Result[i].IdArticle  %>">
+                    <tr>
+                        <td><%= Result[i].IdArticle  %> </td>
+                        <td><%= Result[i].Name%> </td>
+                        <td><%= Result[i].Reference%> </td>
+                     
+                    </tr>
+                </a>
+                <% } %> 
+
+
+            </table>
+
+        </div>
+
+    </main>
+    <% if(page != 1) { %>
+  <a href="/DashArticle/page="<%= page - 1 %> ><button > Preview </button></a>
+
+  <% } %> 
+   <a href="/DashArticle/page="<%= page + 1>> <button>next</button></a>
+</body>
+</html>
