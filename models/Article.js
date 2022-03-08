@@ -2,12 +2,17 @@ var DB = require('./DB');
 
 function NewArticle(article,callback){
 
-    let q = "insert into Article(Name,SalePrice,Cost,Reference,BarCode) values  ('"+article.name+"',"+article.salePrice+","+article.cost+",'"+article.reference+"','"+article.barCode+"')";
+  
+    //AddArticle(NameValue text ,SalePriceValue double ,CostValue double ,ReferenceValue text )
+
+    let q= "select AddArticleReturnId('"+article.name+"',"+article.salePrice+","+article.cost+",'"+article.reference+") as idArticle";
+   
     DB.query(q,(Error,Result)=>{
         
         if (Error) throw error;
         else{
-            callback(Result);
+        let id = Result[0].idArticle;
+            callback(id);
         }
     });
 
@@ -28,7 +33,7 @@ function GetArticleById(idArticle, callback){
 
 function GetArticles(page,callback) {
     let Debut= 20 *(page-1),Fin= 20 * (page);
-    let q ="select * from Article limit "+ Debut+" , " + Fin;
+    let q ="select * from Article where Archived =0 limit "+ Debut+" , " + Fin;
 
 
     DB.query(q,(Err,Result)=>{
@@ -39,6 +44,81 @@ function GetArticles(page,callback) {
     });
 
 }
+
+// ArchivedArticle
+function ArchivedArticle(idArticle){
+
+    let q= "call ArchivedArticle("+idArticle+")";
+
+    DB.query(q,(err,Result)=>{
+
+        if(err) throw err;
+        
+    })
+
+}
+
+// modify Function
+function ModifyArticle(Article ){
+
+
+    GetArticleById(Article.idArticle,(Result)=>{
+        let OldArticle = Result[0];
+
+        if(OldArticle.SalePrice != Article.SalePrice){
+            ModifyArticleSalePrice(Article.idArticle,Article.SalePrice);
+        }
+
+        if(OldArticle.Cost != Article.Cost){
+// update Cost 
+            ModifyArticleCost(Article.idArticle,Article.Cost);
+        }
+
+        if(OldArticle.Reference != Article.Reference){
+            //update Reference
+
+            ModifyArticleReferenced(Article.idArticle,Article.Reference);
+
+        }
+
+
+    });
+
+}
+
+function ModifyArticleSalePrice(idArticle,NewSale){
+
+    let q = 'call ModifyArticle('+idArticle+',"",'+NewSale+',0,"")';
+
+    DB.query(q,(Err,Result)=>{
+        if(Err) throw error;
+
+    })
+
+}
+
+function ModifyArticleCost(idArticle,NewCost){
+
+    let q = 'call ModifyArticle('+idArticle+',"",0,'+NewCost+',"")';
+
+    DB.query(q,(Err,Result)=>{
+        if(Err) throw error;
+
+    })
+}
+
+function ModifyArticleReferenced(idArticle,Reference){
+    let q = 'call ModifyArticle('+idArticle+',"",0,0,"'+Reference+'")';
+
+    DB.query(q,(Err,Result)=>{
+        if(Err) throw error;
+
+    })
+}
+
+// close modify function 
+
+
 
 function GetArticleDetailDimensions(idArticle, callback){
 
@@ -55,24 +135,38 @@ function GetArticleDetailDimensions(idArticle, callback){
 
 }
 
-function CreateDimension(Title, callback){
-    let q= "insert into Dim(title) values('"+title+"')";
 
+//
+// DimensionArticle
+//
+
+
+function CreateDimension(Title,Describe ,callback){
+  
+    let q = 'select AddDimReturnId("'+Title+'", "'+Describe+'")  as idDimension';
     
     DB.query(q,(Err,Result)=>{
 
         if (Err) throw error;
         else{
-            callback(Result);
+            let id = Result[0].idDimenssion;
+            callback(id);
         }
 
     });
+
+}
+
+
+//modifyDimesion 
+
+function modifyDimension(idDimension){
 
 }
 
 function GetDimensions(callback) {
 
-    let q= "select * from Dim";
+    let q= "select idDimension,Title from Dim where Archived=0";
     DB.query(q,(Err,Result)=>{
 
         if (Err) throw error;
@@ -83,15 +177,28 @@ function GetDimensions(callback) {
     });
 }
 
-function RelatedArticleDimensions(idArticle, idDimension, callback){
-    let q = " insert into DimensionArticle(idArticle,idDimension) values ("+idArticle+","+idDimension+")";
+function GetDimensionsArchived(callback) {
 
+    let q= "select idDimension,Title from Dim where Archived=1";
     DB.query(q,(Err,Result)=>{
 
         if (Err) throw error;
         else{
             callback(Result);
         }
+
+    });
+}
+
+
+function RelatedArticleDimensions(idArticle, idDimension, callback){
+    
+    // RelationArticleDim(Article int ,Dimension int )
+    let q = 'call RelationArticleDim('+idArticle+','+idDimension+')'; 
+    DB.query(q,(Err,Result)=>{
+
+        if (Err) throw error;
+        
 
     });
 }
@@ -184,12 +291,20 @@ function DestockArticle_dim(idStock,idArticle, idDimension ,QuantityDestock,Lot,
 
 
 
-module.exports = {NewArticle,
+
+
+module.exports = {
+    NewArticle,
     GetArticles,
+   
     GetArticleById,
+    ArchivedArticle,
     GetArticleDetailDimensions,
+    ModifyArticle,
     CreateDimension,
+    modifyDimension,
     RelatedArticleDimensions,
+    GetDimensionsArchived,
     GetQuantityOfArticle_Dimension,
     GetQuantityOfArticleinStock,
     GetQuantityOfArticleWithDimension,
