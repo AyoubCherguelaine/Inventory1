@@ -18,21 +18,24 @@
     </header>
 
     <main>
-        <div class="Header_Up"> <a href="/AddProduct"> <button >New Product</button> </a> </div>
+        <div class="Header_Up"> <a href="/Article/NewArticle"> <button >New Article</button> </a> </div>
         <div class="Table_Product">
 
             <table >
 
                 <tr>
+                    <td>number</td>
                     <td>IdArticle</td>
                     <td>Product Name</td>
                     <td>Reference</td>
                   
                 </tr>
-
+                    
                 <% for(let i=0;i<Result.length;i++){ %> 
-                    <a href="/DetailArticle/IdArticle=<%= Result[i].IdArticle  %>">
+                    <% let inc = i+1 %> 
+                    <a href="/Article/DetailArticle/IdArticle=<%= Result[i].IdArticle  %>">
                     <tr>
+                        <td> <%=inc%> </td>
                         <td><%= Result[i].IdArticle  %> </td>
                         <td><%= Result[i].Name%> </td>
                         <td><%= Result[i].Reference%> </td>
@@ -47,10 +50,12 @@
         </div>
 
     </main>
+    <% let pre= parseInt(page,10) -1; %> 
+    <% let next= parseInt(page,10) +1; %> 
     <% if(page != 1) { %>
-  <a href="/DashArticle/page="<%= page - 1 %> ><button > Preview </button></a>
+  <a href="/Article/page=<%= pre  %>" ><button > Preview </button></a>
 
   <% } %> 
-   <a href="/DashArticle/page="<%= page + 1>> <button>next</button></a>
+   <a href="/Article/page=<%= next %>"> <button>next</button></a>
 </body>
 </html>

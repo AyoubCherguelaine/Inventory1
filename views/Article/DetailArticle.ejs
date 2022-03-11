@@ -7,6 +7,66 @@
     <title>DetailArticle</title>
 </head>
 <body>
-    
+    <header>
+        <div class="button_Home"><a href="/home">Home</a></div>
+
+        <div class="button_">
+
+        </div>
+
+    </header>
+
+
+    <main >
+        
+        <div class="row">
+
+                <div class="col">
+                         <div class="title row" >
+                            <div> <%= Article.Name %> </div>
+                             <div> <%= Article.Reference%></div>
+                        </div>
+
+                        <br>
+                        <div class="information row" >
+                            <table>
+                                <tr> 
+                                    <td><label>Sale Price :</label></td> 
+                                    <td><label class="Price_Value"><%= Article.SalePrice %> </label></td>
+                                </tr>
+
+                                <tr> 
+                                    <td><label>Cost :</label></td> 
+                                    <td><label class="Cost_Value"><%= Article.SalePrice %> </label></td>
+                                </tr>
+
+                            </table>
+                           
+                        </div>
+                        <br>
+                        <div class="row " >
+                            <table> 
+                                <tr>
+                                    <th>idDimension</th>
+                                    <th>Title Dimension</th>
+                                </tr>   
+
+                                <% for(let i=0;i<Dimension.length;i++){ %>
+                                    <tr >
+                                        <td> <%= Dimension[i].idDimension%> </td>    
+                                        <td> <%= Dimension[i].Title%> </td>
+                                    </tr>
+                                <% } %> 
+                            </table>
+                        </div>
+
+             </div>
+
+            
+
+        </div>
+      
+    </main>
+
 </body>
 </html>

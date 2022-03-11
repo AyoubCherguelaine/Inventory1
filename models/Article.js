@@ -5,8 +5,9 @@ function NewArticle(article,callback){
   
     //AddArticle(NameValue text ,SalePriceValue double ,CostValue double ,ReferenceValue text )
 
-    let q= "select AddArticleReturnId('"+article.name+"',"+article.salePrice+","+article.cost+",'"+article.reference+") as idArticle";
-   
+    let q= "select AddArticleReturnId('"+article.Name+"',"+article.SalePrice+","+article.Cost+",'"+article.Reference+"') as idArticle";
+    
+    console.log(q);
     DB.query(q,(Error,Result)=>{
         
         if (Error) throw error;
@@ -31,7 +32,10 @@ function GetArticleById(idArticle, callback){
 
 }
 
+
+
 function GetArticles(page,callback) {
+
     let Debut= 20 *(page-1),Fin= 20 * (page);
     let q ="select * from Article where Archived =0 limit "+ Debut+" , " + Fin;
 
