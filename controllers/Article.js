@@ -36,7 +36,8 @@ const GetDetailArticle = (req,res) => {
 
             let Article = { Name: Dimension[0].Name, Reference : Dimension[0].Reference,SalePrice: Dimension[0].SalePrice,Cost: Dimension[0].Cost};
 
-            res.render(Chemin+"/DetailArticle",{Article: Article,Dimension: Dimension});
+                res.render(Chemin+"/DetailArticle",{Article: Article,Dimension: Dimension});
+
 
         })
 

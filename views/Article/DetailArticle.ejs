@@ -9,9 +9,10 @@
 <body>
     <header>
         <div class="button_Home"><a href="/home">Home</a></div>
-
+            <br>
         <div class="button_">
-
+            <a href="/Article/"> <button class="button">Add DimensionArticle</button></a>
+            
         </div>
 
     </header>
@@ -37,19 +38,24 @@
 
                                 <tr> 
                                     <td><label>Cost :</label></td> 
-                                    <td><label class="Cost_Value"><%= Article.SalePrice %> </label></td>
+                                    <td><label class="Cost_Value"><%= Article.Cost %> </label></td>
                                 </tr>
 
                             </table>
                            
                         </div>
                         <br>
+
+                        <% if(Dimension[0].idDimension != 1){ %>
+
                         <div class="row " >
                             <table> 
                                 <tr>
                                     <th>idDimension</th>
                                     <th>Title Dimension</th>
                                 </tr>   
+
+
 
                                 <% for(let i=0;i<Dimension.length;i++){ %>
                                     <tr >
@@ -59,6 +65,11 @@
                                 <% } %> 
                             </table>
                         </div>
+                        <% } else { %>
+                                <div class="alert ">
+                                    there is no dimension fr this Article
+                                </div>
+                            <% } %> 
 
              </div>
 

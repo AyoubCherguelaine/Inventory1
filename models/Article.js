@@ -127,7 +127,7 @@ function ModifyArticleReferenced(idArticle,Reference){
 function GetArticleDetailDimensions(idArticle, callback){
 
     let q = "select * from Article_Dimension_deltail where idArticle=" + idArticle;
-
+       
     DB.query(q,(Err,Result)=>{
 
         if (Err) throw error;
@@ -207,8 +207,14 @@ function RelatedArticleDimensions(idArticle, idDimension, callback){
     });
 }
 
-function GetQuantityOfArticleinStock(idArticle,callback){
-    let q= "select * from Quantity_Article_in_Stock where idArticle=" + idArticle;
+
+//
+// Quantity
+//
+
+
+function GetQuantityOfArticleInStock(idArticle,callback){
+    let q= "select GetQuantityArticleGeneral("+idArticle+") as Quantity"  ;
 
     
     DB.query(q,(Err,Result)=>{
@@ -310,7 +316,7 @@ module.exports = {
     RelatedArticleDimensions,
     GetDimensionsArchived,
     GetQuantityOfArticle_Dimension,
-    GetQuantityOfArticleinStock,
+    GetQuantityOfArticleInStock,
     GetQuantityOfArticleWithDimension,
     GetDimensions,
     GetAllDimension_of_Article_in_Stock,

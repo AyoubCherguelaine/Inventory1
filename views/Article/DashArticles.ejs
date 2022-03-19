@@ -9,17 +9,18 @@
 <body>
     
     <header>
-        <div class="button_Home"><a href="/home">Home</a></div>
+        <div class="button_Home"><a href="/">Home</a></div>
 
         <div class="button_">
-
+                <a href="/Article/page=0"> </a>
         </div>
 
     </header>
 
     <main>
         <div class="Header_Up"> <a href="/Article/NewArticle"> <button >New Article</button> </a> </div>
-        <div class="Table_Product">
+        <div class="Archived Article"> <a href="/Article/page=0/Archived=1"> <button >Archived Article/a> </div>
+        <div  class="Table_Product">
 
             <table >
 
@@ -33,15 +34,15 @@
                     
                 <% for(let i=0;i<Result.length;i++){ %> 
                     <% let inc = i+1 %> 
-                    <a href="/Article/DetailArticle/IdArticle=<%= Result[i].IdArticle  %>">
+                    
                     <tr>
-                        <td> <%=inc%> </td>
-                        <td><%= Result[i].IdArticle  %> </td>
+                        <td><a href="/Article/DetailArticle/IdArticle=<%= Result[i].idArticle  %>"><%=inc%></a> </td>
+                        <td><%= Result[i].idArticle  %> </td>
                         <td><%= Result[i].Name%> </td>
                         <td><%= Result[i].Reference%> </td>
                      
                     </tr>
-                </a>
+                
                 <% } %> 
 
 

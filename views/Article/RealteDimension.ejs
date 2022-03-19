@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <header > 
+
+    </header>
+
+    <main >
+
+     <% include('./DetailArticle.ejs',{Article:Article,Dimension:Dimension}) %> 
+
+     <br>
+
+     <form method="post" action="/Dimension/Relate">
+        <div class="form-group">
+            New Dim : 
+        </div>
+        <select class="form-control" name="Dimensionid" >
+            <% for(let i = 0; i < AllDim.length;i++){ %> 
+            <option value="<%= id  %> ">Title hna</option>
+            <%} %>
+            <option> <button onclick="window.location.replace('/Relate_More/idArticle=<%=Article.idArticle%>');"></button> </option>
+        </select>
+     </form>
+        
+    </main>
+
+</body>
+</html>

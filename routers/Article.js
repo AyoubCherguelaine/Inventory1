@@ -11,4 +11,6 @@ router.get("/NewArticle", Control.GetNewProduct);
 
 router.post("/NewArticle", Control.PostNewProduct);
 
+router.get('/DetailArticle/IdArticle=:idArticle',Control.GetDetailArticle);
+
 module.exports = router;
