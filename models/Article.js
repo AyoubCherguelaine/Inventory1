@@ -7,12 +7,12 @@ function NewArticle(article,callback){
 
     let q= "select AddArticleReturnId('"+article.Name+"',"+article.SalePrice+","+article.Cost+",'"+article.Reference+"') as idArticle";
     
-    console.log(q);
     DB.query(q,(Error,Result)=>{
         
         if (Error) throw error;
         else{
-        let id = Result[0].idArticle;
+        let id = Result[0].idArticle;  
+        
             callback(id);
         }
     });
@@ -47,6 +47,19 @@ function GetArticles(page,callback) {
         }
     });
 
+}
+
+function GetArticleArchived(page,callback){
+    let Debut= 20 *(page-1),Fin= 20 * (page);
+    let q ="select * from Article where Archived =1 limit "+ Debut+" , " + Fin;
+
+
+    DB.query(q,(Err,Result)=>{
+        if(Err) throw error;
+        else{
+            callback(Result);
+        }
+    });
 }
 
 // ArchivedArticle
@@ -181,6 +194,39 @@ function GetDimensions(callback) {
     });
 }
 
+function GetDimensions10last(page,callback){
+
+    let D = 20*(page-1);
+    let F = 20*(page);
+
+    let q= "select idDimension,Title from Dim where Archived=0 limit "+D+","+F+"";
+    DB.query(q,(Err,Result)=>{
+
+        if (Err) throw error;
+        else{
+            callback(Result);
+        }
+
+    });
+}
+
+
+function GetDimensions10LastSearch(Title,page,callback){
+    let D = 20*(page-1);
+    let F = 20*(page);
+
+    let q= "select idDimension,Title from Dim where Archived=0 and Title like '"+Title+"%' limit "+D+","+F+"";
+    DB.query(q,(Err,Result)=>{
+
+        if (Err) throw error;
+        else{
+            callback(Result);
+        }
+
+    });
+}
+
+
 function GetDimensionsArchived(callback) {
 
     let q= "select idDimension,Title from Dim where Archived=1";
@@ -195,14 +241,15 @@ function GetDimensionsArchived(callback) {
 }
 
 
-function RelatedArticleDimensions(idArticle, idDimension, callback){
+function RelatedArticleDimensions(idArticle, idDimension,callback){
     
     // RelationArticleDim(Article int ,Dimension int )
     let q = 'call RelationArticleDim('+idArticle+','+idDimension+')'; 
+ 
     DB.query(q,(Err,Result)=>{
 
         if (Err) throw error;
-        
+        callback();
 
     });
 }
@@ -312,6 +359,8 @@ module.exports = {
     GetArticleDetailDimensions,
     ModifyArticle,
     CreateDimension,
+    GetDimensions10LastSearch,
+    GetDimensions10last,
     modifyDimension,
     RelatedArticleDimensions,
     GetDimensionsArchived,
@@ -321,5 +370,6 @@ module.exports = {
     GetDimensions,
     GetAllDimension_of_Article_in_Stock,
     StockArticle_dim,
-    DestockArticle_dim
+    DestockArticle_dim,
+    GetArticleArchived
 };

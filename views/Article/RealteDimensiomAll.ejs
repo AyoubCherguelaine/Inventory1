@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script>
+
+        function submit_Search(){
+            let search=  document.getElementById("search_bar");
+            let searchWord= search.value;
+            console.log(searchWord);
+            window.location.replace("/Dimension/List/idArticle=<%= Article.idArticle%>/page=1/Search="+searchWord);
+        }
+
+    </script>
+</head>
+<body>
+
+    <header>
+        <button type="button"  onclick="window.location.replace('/Article/DetailArticle/IdArticle=<%= Article.idArticle %> ');">Article Details </button>
+        <br>
+     <%- include('DetailArticle',{Article:Article,Dimension:Dimension,Dim:true}) -%> 
+
+    </header>
+
+    <main>
+
+        <form class="Search_Bar"  > 
+            <input type="search" id="search_bar" placeholder="dim" name="Search" >
+            <button type="button"  onclick="submit_Search();"  >search</button>   
+        </form>
+
+        <form method="post" action="/Article/AddDimension/idArticle=<%= Article.idArticle %>">
+            <select class="form-control" name="idDimension" >
+                <% for(let i = 0; i < AllDim.length;i++){ %> 
+                <option value="<%= AllDim[i].idDimension  %> "> <%= AllDim[i].Title %></option>
+                <%} %>
+            </select>
+        </form>
+
+    </main>
+
+</body>
+</html>

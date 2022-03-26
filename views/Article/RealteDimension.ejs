@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script>
+        $("button").click(function(){
+            $.get("/Article/test", function(data, status){
+              alert("Data: " + data + "\nStatus: " + status);
+            });
+          });
+    </script>
+
     <title>Document</title>
 </head>
 <body>
@@ -13,23 +22,34 @@
     </header>
 
     <main >
-
-     <% include('./DetailArticle.ejs',{Article:Article,Dimension:Dimension}) %> 
+        <button type="button"  onclick="window.location.replace('/Article/DetailArticle/IdArticle=<%= Article.idArticle %> ');">Article Details </button>
+        <br>
+     <%- include('DetailArticle',{Article:Article,Dimension:Dimension,Dim:true}) -%> 
 
      <br>
+        
 
-     <form method="post" action="/Dimension/Relate">
+     <form method="post" action="/Article/AddDimension/idArticle=<%= Article.idArticle%>">
         <div class="form-group">
             New Dim : 
         </div>
-        <select class="form-control" name="Dimensionid" >
+        <select class="form-control" name="idDimension" >
             <% for(let i = 0; i < AllDim.length;i++){ %> 
-            <option value="<%= id  %> ">Title hna</option>
+            <option value="<%= AllDim[i].idDimension  %> "> <%= AllDim[i].Title %></option>
             <%} %>
-            <option> <button onclick="window.location.replace('/Relate_More/idArticle=<%=Article.idArticle%>');"></button> </option>
+          
         </select>
+
+        <button type="submit" > Submit</button>
      </form>
+
+     <button type="button"  onclick="window.location.replace('/Dimension/List/idArticle=<%= Article.idArticle%>/page=1');">Other Dim</button>
+
+     <button type="button" onclick="window.location.replace('/Dimension/NewDimension');">Create New Dimension</button>
         
+
+
+     <button type="button" id="test">test</button>
     </main>
 
 </body>

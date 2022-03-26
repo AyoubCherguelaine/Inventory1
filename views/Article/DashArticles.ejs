@@ -19,8 +19,14 @@
 
     <main>
         <div class="Header_Up"> <a href="/Article/NewArticle"> <button >New Article</button> </a> </div>
-        <div class="Archived Article"> <a href="/Article/page=0/Archived=1"> <button >Archived Article/a> </div>
-        <div  class="Table_Product">
+        <% if(Archived ==false){ %> 
+            <div class="Archived Article"> <a href="/Article/page=1/Archived=1"> <button >Archived Article</a> </div>
+        <% } else { %> 
+       
+            <div class="Archived Article"> <a href="/Article/page=1"> <button >Article</a> </div>
+
+        <% } %> 
+            <div  class="Table_Product">
 
             <table >
 
@@ -53,6 +59,10 @@
     </main>
     <% let pre= parseInt(page,10) -1; %> 
     <% let next= parseInt(page,10) +1; %> 
+    <% if(Archived==true){ %>
+        <% pre = pre + "/Archived=1" %>
+        <% next = next + "/Archived=1" %> 
+     <%} %>   
     <% if(page != 1) { %>
   <a href="/Article/page=<%= pre  %>" ><button > Preview </button></a>
 

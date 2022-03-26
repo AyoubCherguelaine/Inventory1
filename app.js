@@ -15,4 +15,6 @@ app.set( 'view engine' , 'ejs' );
 
 app.use('/Article',RoutersArticle);
 
-app.listen(3000);
+app.listen(3000,()=>{
+    console.log("you are in Port : 3000")
+});

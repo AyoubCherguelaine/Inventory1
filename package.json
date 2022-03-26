@@ -2,9 +2,9 @@
   "name": "Inventory1",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
@@ -12,6 +12,8 @@
   "dependencies": {
     "body-parser": "^1.19.2",
     "expess": "0.0.1-security",
-    "mysql": "^2.18.1"
+    "jshint": "^2.13.4",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.15"
   }
 }
