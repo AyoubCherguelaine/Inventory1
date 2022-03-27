@@ -5,6 +5,333 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script >
+        var url = document.location.href;
+       
+
+        function SplitText(Text,search){
+            if(Text.includes(search)){
+                let length = search.length;
+                let index = Text.indexOf(search) +length;
+                let b = Text.slice(0,index);
+
+                while(Text[index] !='/' && index <Text.length){
+                    index++;
+                }
+                if(index < Text.length){
+                    let f= Text.slice(index);
+                    return {Begin:b,End:f};
+                }else{
+                    return {Begin:b,End:null};
+                }
+
+            }else{
+                return {Begin:Text,End:null};
+            }
+        }
+        
+        function DeleteItem(Text){
+          
+            if(url.includes(Text)){
+                let index = url.indexOf(Text);
+               
+                let begin = url.slice(0,index);
+               
+                let f = SplitText(url,Text);
+         
+                if(f.End != null){
+                    url = begin + f.End;
+                }else{
+                    url = begin;
+                }
+            }
+            
+
+        }
+
+        function GetValueItem(id,Text,Type){
+
+            let lng= Text.length;
+            let value="";
+            if(url.includes(Text)){
+                let index =url.indexOf(Text) + lng;
+                while(url[index] !='/' && index < url.length){
+                    value= value + url[index];
+                    index++;
+                }
+                if(Type =='int'){
+                document.getElementById(id).value=parseInt(value); 
+                }else{
+
+                    document.getElementById(id).value=value;
+                }
+                
+
+            }
+
+        }
+
+        function GetValueItemint(id,Text){
+
+            let lng= Text.length;
+            let value="";
+            if(url.includes(Text)){
+                let index =url.indexOf(Text) + lng;
+                while(url[index] !='/' && index < url.length){
+                    value= value + url[index];
+                    index++;
+                }
+               
+                document.getElementById(id).value=parseInt(value); 
+               
+                
+
+            }
+
+        }
+
+        function CreateURL_Name(){
+           
+            let value = document.getElementById('Name').value;
+
+            if(value.length==0){
+                DeleteItem('/Name');
+            }else{
+
+            if( url.includes('/Name=')){
+              let index=  url.indexOf('/Name=');
+             
+              index =index + 6;
+           
+              let debut= url.slice(0,index);
+           
+              while(url[index] !='/' && index <url.length){
+                  index++;
+              }
+             
+              if(index < url.length){
+              let fin = url.slice(index);
+                url = debut + document.getElementById('Name').value + fin;
+              }else{
+                url = debut + document.getElementById('Name').value;
+              }
+
+            }else{
+                //check url
+                if(url.includes('/idArticle=')){
+                    //split {% url  %}
+                        let index =url.indexOf('/idArticle=')+ 11;
+                        while(url[index] != '/' && index < url.length){
+                            index++;
+                        }
+                        if(index <url.length){
+                            url= url.slice(0,index) +'/Name='+ document.getElementById('Name').value+ url.slice(index);
+                        }else{
+                            url = url+ '/Name=' + document.getElementById('Name').value;
+                        }
+
+                }else{
+                    if(url.includes('/page=')){
+                        let index =url.indexOf('/page=')+ 6;
+                        while(url[index] != '/' && index < url.length){
+                            index++;
+                        }
+                        if(index <url.length){
+                            url= url.slice(0,index) +'/Name='+ document.getElementById('Name').value+ url.slice(index);
+                        }else{
+                            url = url+ '/Name=' + document.getElementById('Name').value;
+                        }
+                    }
+                }
+            }
+        }
+          
+        }
+
+        function CreateURL_Price(){
+
+            let value = document.getElementById('Price').value;
+            if(value.length==0){
+                DeleteItem('/Price')
+            }else{
+            if(url.includes('/Price=')){
+                let ur=SplitText(url,'/Price=');
+                  
+                if(ur.End != null){
+                    url = ur.Begin + document.getElementById('Price').value +ur.End;
+                }else{
+                    url = ur.Begin + document.getElementById('Price').value;
+                }
+            }else{
+                url = url +'/Price='+document.getElementById('Price').value;
+            }
+        }
+        }
+
+        function CreateURL_Reference(){
+            let value = document.getElementById('Reference').value;
+            if(value.length==0){
+                DeleteItem('/Reference');
+            }else{
+            if(url.includes('/Reference=')){
+                let ur=SplitText(url,'/Reference=');
+                
+                if(ur.End != null){
+                    url = ur.Begin + document.getElementById('Reference').value +ur.End;
+                }else{
+                    url = ur.Begin + document.getElementById('Reference').value;
+                }
+            }else{
+               if(url.includes('/Name=')){
+            
+                   let index = url.indexOf('/Name=') + 6;
+                   while(url[index] != '/' && index < url.length){
+                       index++;
+                       
+                   }
+                   if(index <url.length){
+                    url= url.slice(0,index) +'/Reference='+ document.getElementById('Reference').value+ url.slice(index);
+                }else{
+                    url = url+ '/Reference=' + document.getElementById('Reference').value;
+                }
+
+               }else{
+                   if(url.includes('/idArticle=')){
+                     
+                    let index =url.indexOf('/idArticle=')+ 11;
+                    while(url[index] != '/' && index < url.length){
+                        index++;
+                    }
+                    if(index <url.length){
+                        url= url.slice(0,index) +'/Reference='+ document.getElementById('Reference').value+ url.slice(index);
+                    }else{
+                        url = url+ '/Reference=' + document.getElementById('Reference').value;
+                    }
+                   }else{
+                    if(url.includes('/page=')){
+                        let index =url.indexOf('/page=')+ 6;
+                       
+                        while(url[index] != '/' && index < url.length){
+                            index++;
+                        }
+                   
+                        if(index <url.length){
+                            url= url.slice(0,index) +'/Reference='+ document.getElementById('Reference').value+ url.slice(index);
+                           
+                        }else{
+                            url = url+ '/Reference=' + document.getElementById('Reference').value;
+                    
+                        }
+                    }
+                   }
+               }
+            }
+        }
+        }
+    
+        function CreateURL_idArticle(){
+
+          
+            let value = document.getElementById('idArticle').value;
+         
+            if(value.length==0){
+                
+                DeleteItem('/idArticle');
+            }else{
+            if(url.includes('/idArticle=')){
+
+                let ur=SplitText(url,'/idArticle=');
+                
+                if(ur.End != null){
+                    url = ur.Begin + document.getElementById('idArticle').value +ur.End;
+                }else{
+                    url = ur.Begin + document.getElementById('idArticle').value;
+                }
+
+            }else{
+                let index =url.indexOf('/page=')+ 6;
+                       
+                while(url[index] != '/' && index < url.length){
+                    index++;
+                }
+           
+                if(index <url.length){
+              
+                    url= url.slice(0,index) +'/idArticle='+ document.getElementById('idArticle').value + url.slice(index);
+                   
+                }else{
+                   
+                    url = url+ '/idArticle=' + document.getElementById('idArticle').value;
+            
+                }
+            }
+        }
+        }
+        
+        function CreateURL_Next(){
+
+          
+                let numbreArticle = parseInt(document.getElementById('numbreArticleInput').value);
+                let page = parseInt(  document.getElementById('pageInput').value ) +1 ;
+               
+                let index = url.indexOf('/page=');
+                let NextUrl="";
+                let rt =SplitText(url,'/page=');
+                if(rt.End != null){
+                     NextUrl= rt.Begin + page + rt.End;
+                   
+                }
+                else{
+                    NextUrl= rt.Begin + page;
+                }
+                if(numbreArticle == 20){
+                window.location.replace(NextUrl) ;
+                }else{
+                    alert("There is no Article next :)\n stop your stupidity :|");
+                }
+        }
+    
+        function CreateURL_Pre(){
+
+          
+                
+                let page = parseInt(  document.getElementById('pageInput').value ) -1 ;
+               if(page >0){
+                let index = url.indexOf('/page=');
+                let PreUrl="";
+                let rt =SplitText(url,'/page=');
+                if(rt.End != null){
+                     PreUrl= rt.Begin + page + rt.End;
+                   
+                }
+                else{
+                    PreUrl= rt.Begin + page;
+                }
+
+                window.location.replace(PreUrl) ;
+            }else{
+                alert("No Pre Page");
+            }
+
+           
+
+        }
+
+        window.onload = function() {
+            // Your code here
+        
+            GetValueItem('Name','/Name=','text');
+            
+            GetValueItem('Price','/Price=','int');
+
+            GetValueItem('Reference','/Reference=','text');
+            
+            GetValueItem('idArticle','/idArticle=','int');
+
+          };
+       
+
+    </script>
 </head>
 <body>
     
@@ -12,12 +339,28 @@
         <div class="button_Home"><a href="/">Home</a></div>
 
         <div class="button_">
-                <a href="/Article/page=0"> </a>
+                <a href="/Article/page=1"> Article </a>
         </div>
 
     </header>
 
     <main>
+
+            <br>
+            <br>
+       
+            <article class="Search">
+                <div>Search</div>
+                <input type="text" placeholder="Name" name="search" id="Name" onchange="CreateURL_Name();" >
+                <input type="number" name="Price" placeholder="Price"id="Price" onchange="CreateURL_Price();" >
+                <input type="text" name="Reference" placeholder="Reference" id="Reference" onchange="CreateURL_Reference();">
+                <input type="number" name="idArticle" placeholder="Article" id="idArticle" onchange="CreateURL_idArticle();">
+                <br>
+                <button type="button" onclick="window.location.replace(url);">Search</button>
+            </article>
+        <br>
+        <br>
+
         <div class="Header_Up"> <a href="/Article/NewArticle"> <button >New Article</button> </a> </div>
         <% if(Archived ==false){ %> 
             <div class="Archived Article"> <a href="/Article/page=1/Archived=1"> <button >Archived Article</a> </div>
@@ -57,16 +400,11 @@
         </div>
 
     </main>
-    <% let pre= parseInt(page,10) -1; %> 
-    <% let next= parseInt(page,10) +1; %> 
-    <% if(Archived==true){ %>
-        <% pre = pre + "/Archived=1" %>
-        <% next = next + "/Archived=1" %> 
-     <%} %>   
-    <% if(page != 1) { %>
-  <a href="/Article/page=<%= pre  %>" ><button > Preview </button></a>
-
-  <% } %> 
-   <a href="/Article/page=<%= next %>"> <button>next</button></a>
+  
+     <input type="hidden" name="Page" value="<%= page %>" id="pageInput">
+     <% let number = Result.length %> 
+    <input type="hidden" name="NumbreArticle" value="<%= number  %>" id="numbreArticleInput" > 
+     <button type="button" onclick="CreateURL_Pre()">Pre</button>
+    <button type="button" onclick="CreateURL_Next()">Next</button>
 </body>
 </html>

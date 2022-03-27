@@ -22,23 +22,36 @@ router.get('/AddDimension/idArticle=:idArticle/idDimension=:idDimension',Control
 
 router.post("/AddDimension/idArticle=:idArticle",Control.PostRelateArticleDimension);
 
+router.get('/page=:page/idArticle=:idArticle/Name=:Name/Ref=:Reference/Price=:Price',Control.GetDashArticlesSearch);
+router.get('/page=:page/idArticle=:idArticle/Name=:Name/Ref=:Reference',Control.GetDashArticlesSearch);
+router.get('/page=:page/idArticle=:idArticle/Name=:Name',Control.GetDashArticlesSearch);
+router.get('/page=:page/idArticle=:idArticle/Ref=:Reference',Control.GetDashArticlesSearch);
+router.get('/page=:page/idArticle=:idArticle',Control.GetDashArticlesSearch);
+router.get('/page=:page/Name=:Name/Ref=:Reference/Price=:Price',Control.GetDashArticlesSearch);
+router.get('/page=:page/Name=:Name/Ref=:Reference',Control.GetDashArticlesSearch);
+router.get('/page=:page/Name=:Name',Control.GetDashArticlesSearch);
+router.get('/page=:page/Ref=:Reference/Price=:Price',Control.GetDashArticlesSearch);
+router.get('/page=:page/Name=:Name/Price=:Price',Control.GetDashArticlesSearch);
+router.get('/page=:page/Name=:Name',Control.GetDashArticlesSearch);
+router.get('/page=:page/Ref=:Reference',Control.GetDashArticlesSearch);
+router.get('/page=:page/Price=:Price',Control.GetDashArticlesSearch);
 
 //get 
 
-// /Article/page=:page                                                          checked
+// /Article/page=:page                                                                      checked
 // /Article/page=:page/search=:search
-// /Article/page=:page/Archived=:archived                                       checked
+// /Article/page=:page/Archived=:archived                                                   checked
 // /Article/page=:page/Archived=:archived/search=:search
-// /Article/NewArticle                                                          checked 
-// /Article/DetailArticle/idArticle=:idArticle                                  checked
-// /Article/AddDimension/idArticle=:idArticle                                   checked
-//  /Article/AddDimension/idArticle=:idArticle/idDimension=:idDimension         checked
-
+// /Article/NewArticle                                                                      checked 
+// /Article/DetailArticle/idArticle=:idArticle                                              checked
+// /Article/AddDimension/idArticle=:idArticle                                               checked
+//  /Article/AddDimension/idArticle=:idArticle/idDimension=:idDimension                     checked
+// /Article/page=:page/idArticle=:idArticle/Name=:Name/Ref=:Refrence/Price=:Price
 
 // post
 
-// /Article/NewArticle                                                          checked
-// /Article/AddDimension/idArticle=:idArticle                                   checked
+// /Article/NewArticle                                                                      checked
+// /Article/AddDimension/idArticle=:idArticle                                               checked
 
 module.exports = router;
 

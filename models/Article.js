@@ -19,6 +19,10 @@ function NewArticle(article,callback){
 
 }
 
+
+// select Article 
+
+
 function GetArticleById(idArticle, callback){
     let q ="select * from Article where idArticle = "+idArticle;
 
@@ -32,7 +36,50 @@ function GetArticleById(idArticle, callback){
 
 }
 
+function NormalSql(Text){
 
+   return Text +'%';
+
+}
+
+function GetArticlesSearch(page,Atributes,searchs,types,callback){
+   
+    let Debut= 20 *(page-1),Fin= 20 * (page);
+
+    let searchQ= " ";
+
+    for(let i=0;i<Atributes.length;i++){
+
+        searchQ+=Atributes[i] ;
+        if(types[i]=='text'){
+            searchQ+=" like '"+ NormalSql(searchs[i])+"' and ";
+
+        }else{
+            if(types[i]=='double'){
+                searchQ+=" = "+searchs[i]+" and ";
+            }else{
+                if(types[i]=='bool'){
+                    if(searchs[i]==true){
+                        searchs+="= 1 and ";
+                    }else{
+                        searchs+="= 0 and ";
+                    }
+                }
+            }
+        }
+    }
+
+    let q ="select * from Article where "+searchQ+" Archived =0  limit "+ Debut+" , " + Fin;
+ 
+    DB.query(q,(Err,Result)=>{
+        if(Err) callback([]);
+        else{
+            callback(Result);
+        }
+    });
+
+
+}
 
 function GetArticles(page,callback) {
 
@@ -43,6 +90,7 @@ function GetArticles(page,callback) {
     DB.query(q,(Err,Result)=>{
         if(Err) throw error;
         else{
+            
             callback(Result);
         }
     });
@@ -61,6 +109,48 @@ function GetArticleArchived(page,callback){
         }
     });
 }
+
+
+function GetArticlesArchivedSearch(page,Atributes,searchs,types,callback){
+    
+    let Debut= 20 *(page-1),Fin= 20 * (page);
+
+    let searchQ= " ";
+
+    for(let i=0;i<Atributes.length;i++){
+
+        searchQ+=Atributes[i] ;
+        if(types[i]=='text'){
+            searchQ+="like '"+searchs[i]+"' and ";
+
+        }else{
+            if(types[i]=='double'){
+                searchQ+="like "+searchs[i]+" and ";
+            }else{
+                if(types[i]=='bool'){
+                    if(searchs[i]==true){
+                        searchs+="= 1 and ";
+                    }else{
+                        searchs+="= 0 and ";
+                    }
+                }
+            }
+        }
+    }
+
+    let q ="select * from Article where "+searchQ+" Archived =1  limit "+ Debut+" , " + Fin;
+
+
+    DB.query(q,(Err,Result)=>{
+        if(Err) throw error;
+        else{
+            callback(Result);
+        }
+    });
+
+}
+
+// fin slect Article
 
 // ArchivedArticle
 function ArchivedArticle(idArticle){
@@ -153,6 +243,8 @@ function GetArticleDetailDimensions(idArticle, callback){
 }
 
 
+
+
 //
 // DimensionArticle
 //
@@ -181,18 +273,9 @@ function modifyDimension(idDimension){
 
 }
 
-function GetDimensions(callback) {
 
-    let q= "select idDimension,Title from Dim where Archived=0";
-    DB.query(q,(Err,Result)=>{
 
-        if (Err) throw error;
-        else{
-            callback(Result);
-        }
-
-    });
-}
+//select diemsions
 
 function GetDimensions10last(page,callback){
 
@@ -240,6 +323,10 @@ function GetDimensionsArchived(callback) {
     });
 }
 
+// fin select dimension
+
+
+//relate
 
 function RelatedArticleDimensions(idArticle, idDimension,callback){
     
@@ -353,7 +440,7 @@ function DestockArticle_dim(idStock,idArticle, idDimension ,QuantityDestock,Lot,
 module.exports = {
     NewArticle,
     GetArticles,
-   
+    GetArticlesSearch,
     GetArticleById,
     ArchivedArticle,
     GetArticleDetailDimensions,
@@ -363,11 +450,11 @@ module.exports = {
     GetDimensions10last,
     modifyDimension,
     RelatedArticleDimensions,
+    GetArticlesArchivedSearch,
     GetDimensionsArchived,
     GetQuantityOfArticle_Dimension,
     GetQuantityOfArticleInStock,
     GetQuantityOfArticleWithDimension,
-    GetDimensions,
     GetAllDimension_of_Article_in_Stock,
     StockArticle_dim,
     DestockArticle_dim,

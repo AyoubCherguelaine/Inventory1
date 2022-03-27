@@ -19,15 +19,60 @@ const PostNewProduct = (req,res) => {
 
 
 const GetDashProduct = (req, res) => {
-
+    
         let page = req.params.page;
+        console.log(page);
+        if(page <= 0 ){
+            res.redirect('/Article/page=1');
+            res.end();
+        }else{
         ArticleModel.GetArticles(page,(Result)=>{
             res.render(Chemin+"DashArticles",{page:page,Result:Result,Archived:false});
         });
-       
+    }
 };
 
+const GetDashArticlesSearch = (req,res) =>{
 
+    let page = req.params.page;
+    //   /Article/page=:page/idArticle=:idArticle/Name=:Name/Ref=:Refrence/Price=:Price
+    let Atributes=[] ,types=[],searchs=[];
+    let i=0;
+    if(!(req.params.idArticle === undefined)){
+        Atributes[i] = 'idArticle';
+        types[i]="double";
+        searchs[i] =req.params.idArticle;
+        i++;
+    }
+
+    if(!(req.params.Name === undefined)){
+        Atributes[i] = 'Name';
+        types[i]="text";
+        searchs[i] =req.params.Name;
+        i++;
+    }
+
+    if(!(req.params.Reference === undefined)){
+        Atributes[i] = 'Reference';
+        types[i]="text";
+        searchs[i] =req.params.Reference;
+        i++;
+    }
+
+    if(!(req.params.Price === undefined)){
+        Atributes[i] = 'SalePrice';
+        types[i]="double";
+        searchs[i] =req.params.Price;
+        i++;
+    }
+
+   
+
+    ArticleModel.GetArticlesSearch(page,Atributes,searchs,types,(Result)=>{
+            res.render(Chemin+"DashArticles",{page:page,Result:Result,Archived:false});
+    });
+
+};
 
 const GetDashProductArchived = (req, res) => {
 
@@ -63,6 +108,7 @@ const GetDetailArticle = (req,res) => {
 const GetRelateArticleDimension = (req,res)=>{
 
     let id = req.params.id;
+   
     ArticleModel.GetDimensions10last( 1,(Result)=>{
 
 
@@ -101,6 +147,9 @@ const GetRelateArticleDimensionData = (req,res)=>{
     });
 };
 
+
+
+
 module.exports = {
     GetDashProduct,
     GetDashProductArchived,
@@ -109,7 +158,8 @@ module.exports = {
     GetDetailArticle,
     GetRelateArticleDimension,
     GetRelateArticleDimensionData,
-    PostRelateArticleDimension
+    PostRelateArticleDimension,
+    GetDashArticlesSearch
 };
 
 
