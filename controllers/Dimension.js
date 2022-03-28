@@ -1,7 +1,7 @@
 
 const ArticleModel = require('../models/Article');
 
-var Chemin = "./Article/";
+var chemin = "./Article/";
 
 const GetNewDimension = (req,res)=>{
 
@@ -26,18 +26,29 @@ const PostNewDimensionArticle = (req, res) => {
     let id = req.params.idArticle;
     ArticleModel.CreateDimension(body.Title,body.Describe,(Result)=>{
         // return in Article
-        res.redirect('/Article/AddDimension/idArticle='+id+'/idDimension=Result');
-
+        res.redirect('/Article/AddDimension/idArticle='+id+'/idDimension='+Result);
     });
 
+};
+
+const GetDashDimension = (req, res) => {
+
+    if(req.params.page <=0){
+        res.redirect('/Dimension/page=1');
+
+    }else{
+
+    ArticleModel.GetDimensions10last(req.params.page , (Result)=>{
+        res.render(chemin+'DashDimension',{Result:Result,page:req.params.page});
+    });
+    }
 }
-
-
 
 module.exports = {
     GetNewDimension,
     PostNewDimension,
-    PostNewDimensionArticle
+    PostNewDimensionArticle,
+    GetDashDimension
 
 };
 

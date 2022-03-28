@@ -22,6 +22,8 @@ router.get('/AddDimension/idArticle=:idArticle/idDimension=:idDimension',Control
 
 router.post("/AddDimension/idArticle=:idArticle",Control.PostRelateArticleDimension);
 
+// Search
+
 router.get('/page=:page/idArticle=:idArticle/Name=:Name/Ref=:Reference/Price=:Price',Control.GetDashArticlesSearch);
 router.get('/page=:page/idArticle=:idArticle/Name=:Name/Ref=:Reference',Control.GetDashArticlesSearch);
 router.get('/page=:page/idArticle=:idArticle/Name=:Name',Control.GetDashArticlesSearch);
@@ -35,6 +37,23 @@ router.get('/page=:page/Name=:Name/Price=:Price',Control.GetDashArticlesSearch);
 router.get('/page=:page/Name=:Name',Control.GetDashArticlesSearch);
 router.get('/page=:page/Ref=:Reference',Control.GetDashArticlesSearch);
 router.get('/page=:page/Price=:Price',Control.GetDashArticlesSearch);
+
+// Search Archived 
+
+router.get('/page=:page/Archived=:Archived/idArticle=:idArticle/Name=:Name/Ref=:Reference/Price=:Price',Control.GetDashArticlesSearch);
+router.get('/page=:page/Archived=:Archived/idArticle=:idArticle/Name=:Name/Ref=:Reference',Control.GetDashArticlesSearch);
+router.get('/page=:page/Archived=:Archived/idArticle=:idArticle/Name=:Name',Control.GetDashArticlesSearch);
+router.get('/page=:page/Archived=:Archived/idArticle=:idArticle/Ref=:Reference',Control.GetDashArticlesSearch);
+router.get('/page=:page/Archived=:Archived/idArticle=:idArticle',Control.GetDashArticlesSearch);
+router.get('/page=:page/Archived=:Archived/Name=:Name/Ref=:Reference/Price=:Price',Control.GetDashArticlesSearch);
+router.get('/page=:page/Archived=:Archived/Name=:Name/Ref=:Reference',Control.GetDashArticlesSearch);
+router.get('/page=:page/Archived=:Archived/Name=:Name',Control.GetDashArticlesSearch);
+router.get('/page=:page/Archived=:Archived/Ref=:Reference/Price=:Price',Control.GetDashArticlesSearch);
+router.get('/page=:page/Archived=:Archived/Name=:Name/Price=:Price',Control.GetDashArticlesSearch);
+router.get('/page=:page/Archived=:Archived/Name=:Name',Control.GetDashArticlesSearch);
+router.get('/page=:page/Archived=:Archived/Ref=:Reference',Control.GetDashArticlesSearch);
+router.get('/page=:page/Archived=:Archived/Price=:Price',Control.GetDashArticlesSearch);
+
 
 //get 
 

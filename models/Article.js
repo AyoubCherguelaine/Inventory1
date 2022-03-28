@@ -165,6 +165,19 @@ function ArchivedArticle(idArticle){
 
 }
 
+// Desarchived Article 
+
+function DesarchivedArticle(idArticle){
+    let q= "call DesarchivedArticle("+idArticle+")";
+
+    DB.query(q,(err,Result)=>{
+
+        if(err) throw err;
+        
+    })
+
+}
+
 // modify Function
 function ModifyArticle(Article ){
 
@@ -282,7 +295,7 @@ function GetDimensions10last(page,callback){
     let D = 20*(page-1);
     let F = 20*(page);
 
-    let q= "select idDimension,Title from Dim where Archived=0 limit "+D+","+F+"";
+    let q= "select idDimension,Title,description as Descr from Dim where Archived=0 limit "+D+","+F+"";
     DB.query(q,(Err,Result)=>{
 
         if (Err) throw error;
@@ -332,13 +345,17 @@ function RelatedArticleDimensions(idArticle, idDimension,callback){
     
     // RelationArticleDim(Article int ,Dimension int )
     let q = 'call RelationArticleDim('+idArticle+','+idDimension+')'; 
- 
+    
+
+    try{
     DB.query(q,(Err,Result)=>{
 
-        if (Err) throw error;
         callback();
 
     });
+    }catch(e){
+
+    }
 }
 
 
@@ -458,5 +475,6 @@ module.exports = {
     GetAllDimension_of_Article_in_Stock,
     StockArticle_dim,
     DestockArticle_dim,
-    GetArticleArchived
+    GetArticleArchived,
+    DesarchivedArticle
 };

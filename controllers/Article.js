@@ -32,6 +32,7 @@ const GetDashProduct = (req, res) => {
     }
 };
 
+
 const GetDashArticlesSearch = (req,res) =>{
 
     let page = req.params.page;

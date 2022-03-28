@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script>
+             
+    
+            var url = document.location.href;
+       
+
+            function SplitText(Text,search){
+                if(Text.includes(search)){
+                    let length = search.length;
+                    let index = Text.indexOf(search) +length;
+                    let b = Text.slice(0,index);
+    
+                    while(Text[index] !='/' && index <Text.length){
+                        index++;
+                    }
+                    if(index < Text.length){
+                        let f= Text.slice(index);
+                        return {Begin:b,End:f};
+                    }else{
+                        return {Begin:b,End:null};
+                    }
+    
+                }else{
+                    return {Begin:Text,End:null};
+                }
+            }
+            
+            function CreateURL_Next(){
+
+          
+                let numbreArticle = parseInt(document.getElementById('numbreArticleInput').value);
+                let page = parseInt(  document.getElementById('pageInput').value ) +1 ;
+               
+                let index = url.indexOf('/page=');
+                let NextUrl="";
+                let rt =SplitText(url,'/page=');
+                if(rt.End != null){
+                     NextUrl= rt.Begin + page + rt.End;
+                   
+                }
+                else{
+                    NextUrl= rt.Begin + page;
+                }
+                if(numbreArticle == 20){
+                window.location.replace(NextUrl) ;
+                }else{
+                    alert("There is no Dimension next :)\n stop your stupidity :|");
+                }
+        }
+    
+           function CreateURL_Pre(){
+
+          
+                
+                let page = parseInt(  document.getElementById('pageInput').value ) -1 ;
+               if(page >0){
+                let index = url.indexOf('/page=');
+                let PreUrl="";
+                let rt =SplitText(url,'/page=');
+                if(rt.End != null){
+                     PreUrl= rt.Begin + page + rt.End;
+                   
+                }
+                else{
+                    PreUrl= rt.Begin + page;
+                }
+
+                window.location.replace(PreUrl) ;
+            }else{
+                alert("No Pre Page");
+            }
+
+           
+
+        }
+
+
+    </script>
+</head>
+<body>
+    <header>
+        <a href="/Home">Home</a>
+        <a href="/Dimension/page=1">Dimension</a>    
+    </header>
+
+    <main>
+        <br><br>
+        <article>
+            <div>Search</div>
+            <input type="text" placeholder="Name" name="search" id="Name" onchange="CreateURL_Name();" >
+            <input type="number" name="idDimension" placeholder="idDimension"id="idDimension" onchange="CreateURL_Price();" >
+
+            <br>
+            <button type="button" onclick="window.location.replace(url);">Search</button>
+
+        </article>
+        <br>
+
+        <button type="button" onclick="window.location.replace('/Dimension/NewDimension')">New Dimension</button>
+
+        <article>
+
+            <table >
+
+                <tr>
+                    <th>number </th>
+                    <th>idDimension </th>
+                    <th>Title </th>
+                    <th>Discribe </th>
+                  
+                </tr>
+
+
+            <% for(let i=0;i<Result.length;i++){ %> 
+                    <% let inc = i+1 %> 
+                       
+                    <tr>
+                        <td><a href="/Dimension/DetailDimension/IdDimension=<%= Result[i].idDimension %>"><%=inc%></a> </td>
+                        <td><%= Result[i].idDimension %> </td>
+                        <td><%= Result[i].Title%> </td>
+                        <td><%= Result[i].Descr %> </td>
+                        <td><button class="btn btn-primary blue">Modify</button></td>
+                        <td><button class="btn btn-primary red">Archived</button></td>
+                        
+                     
+                    </tr>
+            <% } %>        
+            </table>
+        </article>
+
+        <article>
+            <input type="hidden" name="page" value="<%= page %>" id="pageInput">
+            <% let number = Result.length %> 
+            <input type="hidden" name="NumbreArticle" value="<%= number  %>" id="numbreArticleInput" > 
+   
+            <button type="button" onclick="CreateURL_Pre()">Pre</button>
+            <button type="button" onclick="CreateURL_Next()">Next</button>
+        
+        </article>
+
+    </main>
+
+</body>
+</html>
