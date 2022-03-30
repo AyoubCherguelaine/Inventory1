@@ -44,11 +44,47 @@ const GetDashDimension = (req, res) => {
     }
 }
 
+const GetArchivedDimension = (req,res)=>{
+    let id = req.params.idDimension;
+
+    ArticleModel.ArchivedDim(id,()=>{
+        res.redirect('/Dimension/page=1');
+    });
+}
+
+const GetModifyDimension= (req,res)=>{
+
+    // /Dimension/Modify/idDimension=:idDimension
+
+    let id = req.params.idDimension;
+
+    ArticleModel.GetDimension(id,(Result)=>{
+
+        
+        res.render(chemin+"ModifyDimension",{Dim:Result[0]});
+
+    });
+
+};
+
+const PostModifyDimension= (req, res) => {
+
+    let id = req.params.idDimension;
+    ArticleModel.modifyDimension(id,req.body,()=>{
+        res.redirect('/Dimension/Modify/idDimension='+id);
+    });
+
+}
+
+
 module.exports = {
     GetNewDimension,
     PostNewDimension,
     PostNewDimensionArticle,
-    GetDashDimension
+    GetDashDimension,
+    GetArchivedDimension,
+    GetModifyDimension,
+    PostModifyDimension
 
 };
 
@@ -60,11 +96,22 @@ module.exports = {
 // /Dimension/List/idArticle=:idArticle/page=page
 // /Dimension/List/idArticle=:idArticle/page=:page/search=:search
 // /Dimension/page=:page
+// /Dimension/page=:page/Title=:Title
+// /Dimension/page=:page/idDimension=:idDimension
 // /Dimension/page=:page/archived=:archived
+
+// /Dimension/page=:page/Title=:Title/idDimension=:idDimension
+// /Dimension/page=:page/Title=:Title/archived=:archived
+// /Dimension/page=:page/Title=:Title/archived=:archived/idDimension=:idDimension
+
+// 
+// /Dimension/Archived/idDimension=:idDimension                                 checked
+// /Dimension/Desarchived/idDimension=:idDimension
+// /Dimension/Modify/idDimension=:idDimension                                   checked
 
 // post 
 
 
 // /Dimension/NewDimension                                                       checked 
 // /Dimension/NewDimension/idArticle=:idArticle                                  checked
-                                    
+// /Dimension/Modify/idDimension=:idDimension                                   checked

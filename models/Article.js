@@ -50,14 +50,17 @@ function GetArticlesSearch(page,Atributes,searchs,types,callback){
 
     for(let i=0;i<Atributes.length;i++){
 
-        searchQ+=Atributes[i] ;
+       
         if(types[i]=='text'){
-            searchQ+=" like '"+ NormalSql(searchs[i])+"' and ";
+            searchQ+= Atributes[i] ;
+            searchQ+=" like '%"+ NormalSql(searchs[i])+"' and ";
 
         }else{
             if(types[i]=='double'){
-                searchQ+=" = "+searchs[i]+" and ";
+                searchQ+= "cast("+ Atributes[i] +" as char)" ;
+                searchQ+=" like '%"+searchs[i]+"%' and ";
             }else{
+                searchQ+= Atributes[i] ;
                 if(types[i]=='bool'){
                     if(searchs[i]==true){
                         searchs+="= 1 and ";
@@ -70,7 +73,7 @@ function GetArticlesSearch(page,Atributes,searchs,types,callback){
     }
 
     let q ="select * from Article where "+searchQ+" Archived =0  limit "+ Debut+" , " + Fin;
- 
+   
     DB.query(q,(Err,Result)=>{
         if(Err) callback([]);
         else{
@@ -153,27 +156,27 @@ function GetArticlesArchivedSearch(page,Atributes,searchs,types,callback){
 // fin slect Article
 
 // ArchivedArticle
-function ArchivedArticle(idArticle){
+function ArchivedArticle(idArticle,callback){
 
     let q= "call ArchivedArticle("+idArticle+")";
 
     DB.query(q,(err,Result)=>{
 
         if(err) throw err;
-        
+        callback();
     })
 
 }
 
 // Desarchived Article 
 
-function DesarchivedArticle(idArticle){
+function DesarchivedArticle(idArticle,callback){
     let q= "call DesarchivedArticle("+idArticle+")";
 
     DB.query(q,(err,Result)=>{
 
         if(err) throw err;
-        
+        callback();
     })
 
 }
@@ -262,6 +265,23 @@ function GetArticleDetailDimensions(idArticle, callback){
 // DimensionArticle
 //
 
+function GetDimension(id,callback){
+
+    let q= "select * from Dim where idDimension="+id;
+
+    DB.query(q,(err,result)=>{
+
+        if(err){ 
+            console.log(q);
+            throw err;
+        }else{
+            callback(result);
+        }
+    });
+
+
+
+}
 
 function CreateDimension(Title,Describe ,callback){
   
@@ -280,10 +300,35 @@ function CreateDimension(Title,Describe ,callback){
 }
 
 
+// Archived Dim
+
+function ArchivedDim(idDimenssion,callback){
+
+    let q = "call ArchivedDim("+idDimenssion+");";
+
+    DB.query(q,function(err,Result){
+        if(err){ throw err; }
+        else{
+            callback();
+        }
+    });
+
+}
+
+
 //modifyDimesion 
 
-function modifyDimension(idDimension){
+function modifyDimension(idDimension,Dim, callback){
 
+    let q = "call ModifyDim("+idDimension+",'"+Dim.Title+"','"+Dim.description+"');";
+    DB.query(q,(err,result)=>{
+        if(err){ 
+            console.log(q);
+            throw err;
+        }else{
+            callback();
+        }
+    })
 }
 
 
@@ -346,16 +391,16 @@ function RelatedArticleDimensions(idArticle, idDimension,callback){
     // RelationArticleDim(Article int ,Dimension int )
     let q = 'call RelationArticleDim('+idArticle+','+idDimension+')'; 
     
+        console.log(q);
+    
 
-    try{
+    
     DB.query(q,(Err,Result)=>{
 
         callback();
 
     });
-    }catch(e){
-
-    }
+   
 }
 
 
@@ -454,6 +499,9 @@ function DestockArticle_dim(idStock,idArticle, idDimension ,QuantityDestock,Lot,
 
 
 
+
+
+
 module.exports = {
     NewArticle,
     GetArticles,
@@ -462,10 +510,12 @@ module.exports = {
     ArchivedArticle,
     GetArticleDetailDimensions,
     ModifyArticle,
+    GetDimension,
     CreateDimension,
     GetDimensions10LastSearch,
     GetDimensions10last,
     modifyDimension,
+    ArchivedDim,
     RelatedArticleDimensions,
     GetArticlesArchivedSearch,
     GetDimensionsArchived,

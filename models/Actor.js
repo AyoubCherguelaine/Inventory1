@@ -2,7 +2,8 @@ var DB = require('./DB');
 
 function AddActor(Actor,LocalStock=false){
 
-    let q="insert into Actor(Name,Reference,LocalStock) values ('"+Actor.Name+"','"+Actor.Reference+"',"+LocalStock+")";
+    //InsertActor(NameValue text,ReferenceValue text )
+    let q="call InsertActor('"+Actor.Name+"','"+Actor.Reference+"')";
 
     DB.query(q,(Err,Result)=>{
 
@@ -16,6 +17,54 @@ function AddActor(Actor,LocalStock=false){
 
 
 }
+
+
+// archived
+
+function Archived(idActor,callback){
+
+    let q= " call ArchivedActor("+idArticle+")";
+
+    DB.query(q,(err,result)=>{
+        if(err) throw err;
+        else{
+            callback();
+        }
+    })
+
+}
+
+// desarchived
+function Desarchived(idActor,callback){
+
+    let q= " call DesarchivedActor("+idArticle+")";
+
+    DB.query(q,(err,result)=>{
+        if(err) throw err;
+        else{
+            callback();
+        }
+    })
+
+}
+
+// modify 
+
+function ModifyActor(idActor, Actor,callback) {
+    //ModifyActor(idActorValue int,NameValue text ,ReferenceValue text)
+
+    let q = "call ModifyActor("+idActor+",'"+Actor.Name+"','"+Actor.Reference+"')";
+
+    DB.query(q,(err,result)=>{
+        if(err) throw err;
+        else{
+            callback();
+        }
+    })
+
+}
+
+
 
 function SelectActors(callback) {
 
@@ -34,6 +83,8 @@ function SelectActors(callback) {
 
 }
 
+
+
 function SelectActors_idActor(idActor,callback) {
     let q = "select *  from Actor_External where idActor = " +idActor;
 
@@ -49,6 +100,8 @@ function SelectActors_idActor(idActor,callback) {
     });
 
 }
+
+
 
 function SelectInternalActors(callback) {
 
@@ -83,6 +136,9 @@ function SelectInternalActor_idActor(idActor, callback) {
 
 module.exports= {
     AddActor,
+    Archived,
+    Desarchived,
+    ModifyActor,
     SelectActors,
     SelectActors_idActor,
     SelectInternalActors,

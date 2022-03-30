@@ -22,6 +22,12 @@ router.get('/AddDimension/idArticle=:idArticle/idDimension=:idDimension',Control
 
 router.post("/AddDimension/idArticle=:idArticle",Control.PostRelateArticleDimension);
 
+
+router.get('/Archived/idArticle=:idArticle',Control.GetArchivedArticle);
+
+
+router.get('/Desarchived/idArticle=:idArticle',Control.GetDesarchivedArticle);
+
 // Search
 
 router.get('/page=:page/idArticle=:idArticle/Name=:Name/Ref=:Reference/Price=:Price',Control.GetDashArticlesSearch);
@@ -66,7 +72,8 @@ router.get('/page=:page/Archived=:Archived/Price=:Price',Control.GetDashArticles
 // /Article/AddDimension/idArticle=:idArticle                                               checked
 //  /Article/AddDimension/idArticle=:idArticle/idDimension=:idDimension                     checked
 // /Article/page=:page/idArticle=:idArticle/Name=:Name/Ref=:Refrence/Price=:Price
-
+//  /Article/Archived/idArticle=:idArticle                                                  checked 
+// /Article/Desarchived/idArticle=:idArticle                                                checked
 // post
 
 // /Article/NewArticle                                                                      checked

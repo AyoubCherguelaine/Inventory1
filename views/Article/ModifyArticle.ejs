@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form method="post" action="/Article/Modify/idArticle=<%= Article.idArticle %>" >
+
+        <!--Name text, SalePrice double, Cost double, Reference text, BarCode text, -->
+        <div > 
+            <label>Name Product</label>
+            <input type="text" name="Name" value="<%= Article.Name %>"/>    
+        </div>
+        <div>
+            <label>Sale Price</label>
+            <input type="number" name="SalePrice" value="<%= Article.SalePrice %>"/>
+        
+        </div>
+
+        <div>
+            <label>Cost</label>
+            <input type="number" name="Cost" value="<%= Article.Cost %>"/>
+        
+        </div>
+        <div>
+            <label>Reference</label>
+            <input type="text" name="Reference"  value="<%= Article.Reference %>" />
+        </div>
+
+        <div>
+            <label>Sale Price</label>
+            <input type="text" name="BarCode" value="<%= Article.BarCode %>"/>
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+
+</body>
+</html>

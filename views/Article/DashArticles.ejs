@@ -49,6 +49,42 @@
 
         }
 
+        function CreateURL_Archived(){
+            let val = document.getElementById('Archived').checked ;
+            console.log(val);
+           if(val){
+            if(url.includes('/Archived=')){
+             
+                //do nothing 
+            }else{
+                //create ArchivedCheck
+
+                let index= url.indexOf('/page=') + 1;
+
+                while( url[index] != '/' && index < url.length){
+                    index++;
+                }
+
+                let b = url.slice(0,index);
+                let f = url.slice(index);
+                let newurl="";
+                console.log(b+" \n "+ f);
+                if(f!=null){
+                 newurl = b+"/Archived=1"+f;
+                }else{
+                     newurl = b+"/Archived=1";
+                }
+                console.log(newurl);
+                url = newurl
+            }
+              }
+            else{
+                    // deleteItem
+                    DeleteItem('/Archived=');
+            }
+
+        }
+
         function GetValueItem(id,Text,Type){
 
             let lng= Text.length;
@@ -118,6 +154,9 @@
 
             }else{
                 //check url
+
+            
+
                 if(url.includes('/idArticle=')){
                     //split {% url  %}
                         let index =url.indexOf('/idArticle=')+ 11;
@@ -131,6 +170,21 @@
                         }
 
                 }else{
+
+                    if(url.includes('/Archived=')){
+                        //split {% url  %}
+                            let index =url.indexOf('/Archived=')+ 1;
+                            while(url[index] != '/' && index < url.length){
+                                index++;
+                            }
+                            if(index <url.length){
+                                url= url.slice(0,index) +'/Name='+ document.getElementById('Name').value+ url.slice(index);
+                            }else{
+                                url = url+ '/Name=' + document.getElementById('Name').value;
+                            }
+    
+                    }else{
+
                     if(url.includes('/page=')){
                         let index =url.indexOf('/page=')+ 6;
                         while(url[index] != '/' && index < url.length){
@@ -142,6 +196,7 @@
                             url = url+ '/Name=' + document.getElementById('Name').value;
                         }
                     }
+                }
                 }
             }
         }
@@ -208,6 +263,22 @@
                         url = url+ '/Reference=' + document.getElementById('Reference').value;
                     }
                    }else{
+                    if(url.includes('/Archived=')){
+                        //split {% url  %}
+                            let index =url.indexOf('/Archived=')+ 1;
+                            while(url[index] != '/' && index < url.length){
+                                index++;
+                            }
+                            if(index <url.length){
+                                url= url.slice(0,index) +'/Name='+ document.getElementById('Name').value+ url.slice(index);
+                            }else{
+                                url = url+ '/Name=' + document.getElementById('Name').value;
+                            }
+    
+                    }else{
+                    
+
+
                     if(url.includes('/page=')){
                         let index =url.indexOf('/page=')+ 6;
                        
@@ -223,6 +294,7 @@
                     
                         }
                     }
+                }
                    }
                }
             }
@@ -269,7 +341,7 @@
         }
         
         function CreateURL_Next(){
-
+            
           
                 let numbreArticle = parseInt(document.getElementById('numbreArticleInput').value);
                 let page = parseInt(  document.getElementById('pageInput').value ) +1 ;
@@ -331,6 +403,50 @@
           };
        
 
+          function ValideAlert(Message){
+
+            let valide = window.confirm(Message);
+            return valide;
+
+        }
+
+
+           function ArchivedButton(id){
+
+            //
+           id = id.slice(0,id.indexOf('Archived'));
+            // valide 
+            let data = JSON.parse(document.getElementById('DataArticle'+id).value);
+            if(ValideAlert("are you sure to archived "+data.Name+" !!!")){
+                //get Archived article
+                if(document.getElementById('ArchivedData').value == "false" )
+                     window.location.replace('/Article/Archived/idArticle='+id);
+               else{
+                window.location.replace('/Article/Desarchived/idArticle='+id);
+               }
+              
+            }else{
+                alert("ترخف");
+            }
+
+
+            }
+
+        function ModifyButton(id){     
+            id = id.slice(0,id.indexOf('Modify'));
+            // valide 
+            let data = JSON.parse(document.getElementById('DataArticle'+id).value);
+            if(ValideAlert("are you sure to Modify "+data.Name+" !!!")){
+                //get Archived article
+                
+                window.location.replace('/Article/Modify/idArticle='+id);
+               
+            }else{
+                alert("ترخف");
+            }
+
+        }
+
     </script>
 </head>
 <body>
@@ -355,6 +471,8 @@
                 <input type="number" name="Price" placeholder="Price"id="Price" onchange="CreateURL_Price();" >
                 <input type="text" name="Reference" placeholder="Reference" id="Reference" onchange="CreateURL_Reference();">
                 <input type="number" name="idArticle" placeholder="Article" id="idArticle" onchange="CreateURL_idArticle();">
+                <input type="checkbox" name="Archived"  id="Archived" onchange="CreateURL_Archived()">
+                <label for="Archived">Archived</label>
                 <br>
                 <button type="button" onclick="window.location.replace(url);">Search</button>
             </article>
@@ -374,10 +492,12 @@
             <table >
 
                 <tr>
-                    <td>number</td>
-                    <td>IdArticle</td>
-                    <td>Product Name</td>
-                    <td>Reference</td>
+                    <th >number</th>
+                    <th colspan="2">IdArticle</th>
+                    <th colspan="2">Product Name</th>
+                    <th colspan="2">Price</th>
+                    <th colspan="2">Reference</th>
+                   
                   
                 </tr>
                     
@@ -386,9 +506,19 @@
                     
                     <tr>
                         <td><a href="/Article/DetailArticle/IdArticle=<%= Result[i].idArticle  %>"><%=inc%></a> </td>
-                        <td><%= Result[i].idArticle  %> </td>
-                        <td><%= Result[i].Name%> </td>
-                        <td><%= Result[i].Reference%> </td>
+                        <td colspan="2"><%= Result[i].idArticle  %> </td>
+                        <td colspan="2"><%= Result[i].Name%> </td>
+                        <td colspan="2"><%= Result[i].SalePrice%> </td>
+                        <td colspan="2"><%= Result[i].Reference%> </td>
+                        <td ><input type="hidden" id="DataArticle<%= Result[i].idArticle  %>" value='{"idArticle":"<%= Result[i].idArticle  %>","Name":"<%= Result[i].Name%>","Reference":"<%= Result[i].Reference%>"}' ></td>
+                        <td><button class="btn btn-primary" id="<%= Result[i].idArticle%>Modify" onclick="ModifyButton(this.attributes['id'].value)">Modify</button></td>
+                        <td><button class="btn btn-primary" id="<%= Result[i].idArticle%>Archived" onclick="ArchivedButton(this.attributes['id'].value)">
+                           <% if(!Archived ){ %> 
+                            Archived
+                            <% } else { %>
+                                    Desarchived
+                                <% } %> 
+                        </button></td>
                      
                     </tr>
                 
@@ -404,6 +534,7 @@
      <input type="hidden" name="Page" value="<%= page %>" id="pageInput">
      <% let number = Result.length %> 
     <input type="hidden" name="NumbreArticle" value="<%= number  %>" id="numbreArticleInput" > 
+    <input type="hidden" name="Archived" id="ArchivedData" value="<%= Archived %>">
      <button type="button" onclick="CreateURL_Pre()">Pre</button>
     <button type="button" onclick="CreateURL_Next()">Next</button>
 </body>

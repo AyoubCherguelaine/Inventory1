@@ -21,7 +21,7 @@ const PostNewProduct = (req,res) => {
 const GetDashProduct = (req, res) => {
     
         let page = req.params.page;
-        console.log(page);
+    
         if(page <= 0 ){
             res.redirect('/Article/page=1');
             res.end();
@@ -39,6 +39,14 @@ const GetDashArticlesSearch = (req,res) =>{
     //   /Article/page=:page/idArticle=:idArticle/Name=:Name/Ref=:Refrence/Price=:Price
     let Atributes=[] ,types=[],searchs=[];
     let i=0;
+
+    if(!(req.params.Archived === undefined)){
+        Atributes[i] = 'Archived';
+        types[i]="bool";
+        searchs[i] =req.params.idArticle;
+        i++;
+    }
+
     if(!(req.params.idArticle === undefined)){
         Atributes[i] = 'idArticle';
         types[i]="double";
@@ -78,7 +86,7 @@ const GetDashArticlesSearch = (req,res) =>{
 const GetDashProductArchived = (req, res) => {
 
     let page = req.params.page;
-   console.log(req.params.Archived)
+
     ArticleModel.GetArticleArchived(page,(Result)=>{
         res.render(Chemin+"DashArticles",{page:page,Result:Result,Archived:true});
     });
@@ -92,7 +100,7 @@ const GetDetailArticle = (req,res) => {
     let id = req.params.idArticle;
 
         ArticleModel.GetArticleDetailDimensions(id,(Dimension)=>{
-
+          
             let Article = {idArticle:Dimension[0].idArticle, Name: Dimension[0].Name, Reference : Dimension[0].Reference,SalePrice: Dimension[0].SalePrice,Cost: Dimension[0].Cost};
 
                 res.render(Chemin+"/DetailArticle",{Article: Article,Dimension: Dimension});
@@ -148,7 +156,21 @@ const GetRelateArticleDimensionData = (req,res)=>{
     });
 };
 
+const GetArchivedArticle = (req, res) => {
+    let id = req.params.idArticle;
+    console.log("Archived "+ id);
+    ArticleModel.ArchivedArticle(id,()=>{
+        res.redirect('/Article/page=1');
+    });
+};
 
+const GetDesarchivedArticle = (req, res) => {
+    let id = req.params.idArticle;
+    console.log("desarchived "+ id);
+    ArticleModel.DesarchivedArticle(id,()=>{
+        res.redirect('/Article/page=1');
+    });
+};
 
 
 module.exports = {
@@ -156,6 +178,8 @@ module.exports = {
     GetDashProductArchived,
     PostNewProduct,
     GetNewProduct,
+    GetArchivedArticle,
+    GetDesarchivedArticle,
     GetDetailArticle,
     GetRelateArticleDimension,
     GetRelateArticleDimensionData,

@@ -12,27 +12,7 @@
             var url = document.location.href;
        
 
-            function SplitText(Text,search){
-                if(Text.includes(search)){
-                    let length = search.length;
-                    let index = Text.indexOf(search) +length;
-                    let b = Text.slice(0,index);
-    
-                    while(Text[index] !='/' && index <Text.length){
-                        index++;
-                    }
-                    if(index < Text.length){
-                        let f= Text.slice(index);
-                        return {Begin:b,End:f};
-                    }else{
-                        return {Begin:b,End:null};
-                    }
-    
-                }else{
-                    return {Begin:Text,End:null};
-                }
-            }
-            
+          
             function CreateURL_Next(){
 
           
@@ -82,8 +62,81 @@
 
         }
 
+            function ArchivedValide(Message){
 
-    </script>
+                let valide = window.confirm(Message);
+                return valide;
+
+            }
+
+            function ArchivedItem(id){
+               
+                let idval= id.slice(0,id.indexOf("Button"));
+               
+                let val=  document.getElementById(idval).value;
+                val = val.replaceAll("'",'"');
+                let jso= JSON.parse(val);
+                console.log(jso);
+                let message = "are you sure to archived "+jso.Title+" with his id = "+jso.idDimension+"?";
+
+                let valide = ArchivedValide(message);
+               
+                if(valide){
+                    alert(jso.Title+'Archived !!!');
+                    //Get
+                    window.location.replace('/Dimension/Archived/idDimension='+jso.idDimension);
+                }else{
+                    alert("ترخف");
+
+
+                }
+            }
+
+
+            function GetModifyPage(id){
+                id = id.slice(6);
+              if(  ArchivedValide("Modify item ? ")){
+                window.location.replace('/Dimension/Modify/idDimension='+id);
+              }else{
+                  alert("ترخف");
+              }
+            }
+
+            window.onload = function() {
+            //ArchivedItem('HiddenDimension2');
+
+            }
+   
+            function SplitText(Text,search){
+                if(Text.includes(search)){
+                    let length = search.length;
+                    let index = Text.indexOf(search) +length;
+                    let b = Text.slice(0,index);
+    
+                    while(Text[index] !='/' && index <Text.length){
+                        index++;
+                    }
+                    if(index < Text.length){
+                        let f= Text.slice(index);
+                        return {Begin:b,End:f};
+                    }else{
+                        return {Begin:b,End:null};
+                    }
+    
+                }else{
+                    return {Begin:Text,End:null};
+                }
+            }
+            
+
+            function SearchTitle(){
+
+                
+                
+
+            }
+
+        </script>
 </head>
 <body>
     <header>
@@ -97,7 +150,8 @@
             <div>Search</div>
             <input type="text" placeholder="Name" name="search" id="Name" onchange="CreateURL_Name();" >
             <input type="number" name="idDimension" placeholder="idDimension"id="idDimension" onchange="CreateURL_Price();" >
-
+            <input type="checkbox" id="Archived" name="Archived" >
+             <label for="Archived">Archived</label>
             <br>
             <button type="button" onclick="window.location.replace(url);">Search</button>
 
@@ -127,9 +181,9 @@
                         <td><%= Result[i].idDimension %> </td>
                         <td><%= Result[i].Title%> </td>
                         <td><%= Result[i].Descr %> </td>
-                        <td><button class="btn btn-primary blue">Modify</button></td>
-                        <td><button class="btn btn-primary red">Archived</button></td>
-                        
+                        <td><button class="btn btn-primary blue" id="Modify<%= Result[i].idDimension %>" onclick="GetModifyPage(this.attributes['id'].value)">Modify</button></td>
+                        <td><button class="btn btn-primary red" onclick='ArchivedItem(this.attributes["id"].value)' id="HiddenDimension<%= Result[i].idDimension %>Button">Archived</button></td>
+                        <td> <input type="hidden" name="Message Archived" value="{'idDimension':'<%= Result[i].idDimension %>','Title':'<%= Result[i].Title %>'}" id="HiddenDimension<%= Result[i].idDimension %>" ></td>
                      
                     </tr>
             <% } %>        
